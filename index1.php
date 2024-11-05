@@ -23,13 +23,13 @@
             $row = mysqli_fetch_assoc($result);
 
             if(is_array($row) && !empty($row)){
-              $_SESSION['valid'] = $row ['Email'];
-              $_SESSION['username'] = $row ['Username'];
-              $_SESSION['age'] = $row ['Age'];
-              $_SESSION['id'] = $row ['Id'];
+              $_SESSION['valid'] = filter_var($row ['Email'], FILTER_SANITIZE_EMAIL);
+              $_SESSION['username'] = filter_var($row ['Username'], FILTER_SANITIZE_STRING);
+              $_SESSION['age'] = filter_var($row ['Age'], FILTER_SANITIZE_NUMBER_INT);
+              $_SESSION['id'] = filter_var($row ['Id'], FILTER_SANITIZE_NUMBER_INT);
 
-              setcookie("user_email", $row['Email'], time() + (86400 * 30), "/");
-              setcookie("user_name", $row['Username'], time() + (86400 * 30), "/");
+              setcookie("user_email", filter_var($row['Email'], FILTER_SANITIZE_EMAIL), time() + (86400 * 30), "/");
+              setcookie("user_name", filter_var($row['Username'], FILTER_SANITIZE_STRING), time() + (86400 * 30), "/");
 
               if(isset($_SESSION['valid'])){
                 header("Location: index.php");
